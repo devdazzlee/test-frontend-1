@@ -1,10 +1,9 @@
 "use client";
 
+import { PumpFunAmm } from "@/utils/pump-fun-final";
 import {
-  ChevronDown,
   CircleArrowDown,
   CircleArrowUp,
-  Settings,
   Zap,
 } from "lucide-react";
 import { useState } from "react";

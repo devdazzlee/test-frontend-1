@@ -1,4 +1,4 @@
-class AMM {
+export class PumpFunAmm {
   constructor() {
     this.totalSupply = 1000000000; // Total supply of tokens
     this.reservedTokens = 206900000; // Reserved tokens
@@ -141,44 +141,45 @@ class AMM {
   }
 }
 
+
 // Example Usage
-const amm = new AMM();
+// const amm = new PumpFunAmm();
 
-amm.getState();
+// amm.getState();
 
-const boughtTokenQoute1 = amm.getTokenFrom(0.0001); // 3576
-const boughtTokenQoute2 = amm.getTokenFrom(0.001); // 35765
-const boughtTokenQoute3 = amm.getTokenFrom(0.01); // 357547
+// const boughtTokenQoute1 = amm.getTokenFrom(0.0001); // 3576
+// const boughtTokenQoute2 = amm.getTokenFrom(0.001); // 35765
+// const boughtTokenQoute3 = amm.getTokenFrom(0.01); // 357547
 
-const boughtToken1 = amm.buyTokens(0.0001); // 3576
+// const boughtToken1 = amm.buyTokens(0.0001); // 3576
 
-const boughtTokenQoute4 = amm.getTokenFrom(0.005); // 178802
-const boughtTokenQoute5 = amm.getTokenFrom(0.05); // 1785346
-const boughtTokenQoute6 = amm.getTokenFrom(0.5); // 17590048
+// const boughtTokenQoute4 = amm.getTokenFrom(0.005); // 178802
+// const boughtTokenQoute5 = amm.getTokenFrom(0.05); // 1785346
+// const boughtTokenQoute6 = amm.getTokenFrom(0.5); // 17590048
 
-const boughtToken2 = amm.buyTokens(0.005); // 178802
+// const boughtToken2 = amm.buyTokens(0.005); // 178802
 
-const boughtTokenQoute7 = amm.getTokenFrom(0.005); // 178743
-const boughtTokenQoute8 = amm.getTokenFrom(0.05); // 1784751
-const boughtTokenQoute9 = amm.getTokenFrom(0.5); // 17584234
+// const boughtTokenQoute7 = amm.getTokenFrom(0.005); // 178743
+// const boughtTokenQoute8 = amm.getTokenFrom(0.05); // 1784751
+// const boughtTokenQoute9 = amm.getTokenFrom(0.5); // 17584234
 
-const sellTokens1 = amm.sellTokens(178802); // 0.004999989580898756 sol
+// const sellTokens1 = amm.sellTokens(178802); // 0.004999989580898756 sol
 
-const boughtTokenQoute10 = amm.getTokenFrom(0.005); // 178802
-const boughtTokenQoute11 = amm.getTokenFrom(0.05); // 1785346
-const boughtTokenQoute12 = amm.getTokenFrom(0.5); // 17590048
+// const boughtTokenQoute10 = amm.getTokenFrom(0.005); // 178802
+// const boughtTokenQoute11 = amm.getTokenFrom(0.05); // 1785346
+// const boughtTokenQoute12 = amm.getTokenFrom(0.5); // 17590048
 
-const sellTokens2 = amm.sellTokens(3000); // 0.00008387729022629742 sol
+// const sellTokens2 = amm.sellTokens(3000); // 0.00008387729022629742 sol
 
-const boughtTokenQoute13 = amm.getTokenFrom(0.005); // 178803
-const boughtTokenQoute14 = amm.getTokenFrom(0.05); // 1785356
-const boughtTokenQoute15 = amm.getTokenFrom(0.5); // 17590148
+// const boughtTokenQoute13 = amm.getTokenFrom(0.005); // 178803
+// const boughtTokenQoute14 = amm.getTokenFrom(0.05); // 1785356
+// const boughtTokenQoute15 = amm.getTokenFrom(0.5); // 17590148
 
-const boughtToken3 = amm.buyTokens(85); // 178802
+// const boughtToken3 = amm.buyTokens(85); // 178802
 
-amm.getProgess();
+// amm.getProgess();
 
-amm.getState();
+// amm.getState();
 
 // amm.getTokenFrom(11111111111)
 // amm.getSolFrom(793096422.9719648)
