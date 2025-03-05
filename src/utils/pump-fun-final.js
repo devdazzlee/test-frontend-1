@@ -1,3 +1,5 @@
+"use client";
+
 export class PumpFunAmm {
   constructor() {
     this.totalSupply = 1000000000; // Total supply of tokens
@@ -17,12 +19,11 @@ export class PumpFunAmm {
   }
   getProgess() {
     const progress =
-      1-((this.realTokenBalance / this.initialRealTokenBalance) * 100);
+      1 - (this.realTokenBalance / this.initialRealTokenBalance) * 100;
     console.log("🚀 Progress:", progress);
     return progress;
   }
   getState() {
-
     console.log("🚀 this.realTokenBalance:", this.realTokenBalance);
     console.log("🚀 this.realSolBalance:", this.realSolBalance);
 
@@ -34,7 +35,7 @@ export class PumpFunAmm {
       realSolBalance: this.realSolBalance,
       tokenReserves: this.tokenReserves,
       solReserves: this.solReserves,
-    }
+    };
   }
 
   // Buy Tokens with SOL
@@ -124,8 +125,8 @@ export class PumpFunAmm {
         newSolReserves: this.solReserves,
       };
     }
-    if(_token>this.tokenReserves){
-      _token = this.tokenReserves
+    if (_token > this.tokenReserves) {
+      _token = this.tokenReserves;
     }
 
     const fee = 0; // Apply 0.3% fee
@@ -148,7 +149,6 @@ export class PumpFunAmm {
     return { solReceived, newTokenReserves, newSolReserves };
   }
 }
-
 
 // Example Usage
 // const amm = new PumpFunAmm();

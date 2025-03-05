@@ -1,15 +1,14 @@
 "use client";
 
 import { PumpFunAmm } from "@/utils/pump-fun-final";
-import { CircleArrowDown, CircleArrowUp, Zap } from "lucide-react";
+import { CircleArrowDown, CircleArrowUp, Wallet, Zap } from "lucide-react";
 import { useState, useEffect } from "react";
 import LabelValueRow from "./LabelValueRow/LabelValueRow";
+import Image from "next/image";
+import TransactionHistory from "./TransactionHistory/TransactionHistory";
 
 export default function BuySellPanel() {
   const [txHistory, setTxHistory] = useState([]);
-  //{}
-
-
   const [amm, setAmm] = useState(null);
   const [userBalance, setUserBalance] = useState({
     solBalance: 100,
@@ -59,18 +58,18 @@ export default function BuySellPanel() {
     const tokensReceived = amm.buyTokens(solAmount);
 
     const newTx = {
-      type:"buy",
-      sellAmount:{
+      type: "buy",
+      sellAmount: {
         amount: solAmount,
         currency: "SOL",
       },
-      buyAmount:{
+      buyAmount: {
         amount: tokensReceived,
         currency: "TOKEN",
-      }
-    }
-    setTxHistory([newTx,...txHistory]);
-    
+      },
+    };
+    setTxHistory([newTx, ...txHistory]);
+
     setUserBalance((prev) => ({
       solBalance: prev.solBalance - solAmount,
       tokenBalance: prev.tokenBalance + tokensReceived,
@@ -95,18 +94,17 @@ export default function BuySellPanel() {
     const solReceived = amm.sellTokens(tokenAmount);
 
     const newTx = {
-      type:"sell",
-      sellAmount:{
+      type: "sell",
+      sellAmount: {
         amount: tokenAmount,
         currency: "TOKEN",
       },
-      buyAmount:{
+      buyAmount: {
         amount: solReceived,
         currency: "SOL",
-      }
-    }
-    setTxHistory([newTx,...txHistory]);
-
+      },
+    };
+    setTxHistory([newTx, ...txHistory]);
 
     setUserBalance((prev) => ({
       solBalance: prev.solBalance + solReceived,
@@ -157,91 +155,127 @@ export default function BuySellPanel() {
   }
 
   return (
-    <div className="w-1/3 mx-auto stats-card rounded-2xl p-4 text-white my-6 ">
-      <h1 className="text-6xl font-extrabold text-center bg-gradient-to-r from-[#00FF85] to-yellow-400 text-transparent bg-clip-text drop-shadow-[0_0_10px_rgba(0,255,133,0.6)] animate-text-glow">
-        PUMP FUN
-      </h1>
+    <div className="flex justify-center flex-wrap min-h-screen ">
+      <div>
+        <div className="w-full  mx-auto stats-card rounded-2xl p-4 text-white my-6">
+          <h1 className="text-6xl font-extrabold text-center bg-gradient-to-r from-[#00FF85] to-yellow-400 text-transparent bg-clip-text drop-shadow-[0_0_10px_rgba(0,255,133,0.6)] animate-text-glow">
+            PUMP FUN
+          </h1>
 
-      <div className="mt-4" >
-        <LabelValueRow
-          label="Your Sol Balance"
-          value={userBalance.solBalance.toFixed(2)}
-        />
-        <LabelValueRow
-          label="Your Token balance"
-          value={userBalance.tokenBalance.toFixed(2)}
-        />
-        <LabelValueRow
-          label="Pump Fun Sol Balance"
-          value={ammState.realSolBalance.toFixed(2)}
-        />
-        <LabelValueRow
-          label="Pump Fun Token Balance"
-          value={ammState.realTokenBalance.toFixed(2)}
-        />
-      </div>
+          <div className="mt-4">
+            <LabelValueRow
+              label="Your Sol Balance"
+              value={userBalance.solBalance.toFixed(2)}
+            />
+            <LabelValueRow
+              label="Your Token balance"
+              value={userBalance.tokenBalance.toFixed(2)}
+            />
+            <LabelValueRow
+              label="Pump Fun Sol Balance"
+              value={ammState.realSolBalance.toFixed(2)}
+            />
+            <LabelValueRow
+              label="Pump Fun Token Balance"
+              value={ammState.realTokenBalance.toFixed(2)}
+            />
+          </div>
 
-      <div className="space-y-3 mt-4">
-        <div className="flex buy-sell-tab rounded-full p-1 mb-4">
-          {[
-            { label: "buy", icon: <CircleArrowDown /> },
-            { label: "sell", icon: <CircleArrowUp /> },
-          ].map(({ label, icon }) => (
-            <button
-              key={label}
-              onClick={() => setActiveTab(label)}
-              className={`flex-1 flex items-center justify-start gap-2 py-2 px-4 rounded-full text-sm font-medium transition-colors ${
-                activeTab === label ? "bg-[#2C2C2C]" : "text-gray-400"
-              }`}
-            >
-              {icon}
-              {label.charAt(0).toUpperCase() + label.slice(1)}
-            </button>
-          ))}
+          <div className="space-y-3 mt-4">
+            <div className="flex buy-sell-tab rounded-full p-1 mb-4">
+              {[
+                { label: "buy", icon: <CircleArrowDown /> },
+                { label: "sell", icon: <CircleArrowUp /> },
+              ].map(({ label, icon }) => (
+                <button
+                  key={label}
+                  onClick={() => setActiveTab(label)}
+                  className={`flex-1 flex items-center justify-start gap-2 py-2 px-4 rounded-full text-sm font-medium transition-colors ${
+                    activeTab === label
+                      ? label === "buy"
+                        ? "bg-[#3eb66a] text-white"
+                        : "bg-[#F87171] text-white"
+                      : "text-gray-400"
+                  }`}
+                >
+                  {icon}
+                  {label.charAt(0).toUpperCase() + label.slice(1)}
+                </button>
+              ))}
+            </div>
+
+            {activeTab === "buy" ? (
+              <div className="relative">
+                <div className="relative w-full">
+                  {/* Image inside the input field */}
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                    <Image
+                      src="/images/solana.png"
+                      alt="solana"
+                      width={20}
+                      height={20}
+                    />
+                  </div>
+
+                  {/* Input field with left padding to avoid overlap */}
+                  <input
+                    type="number"
+                    value={solInput}
+                    onChange={handleSolInputChange}
+                    placeholder="Enter SOL Amount"
+                    className="w-full bg-[#1C1C1C] rounded-xl py-2.5 pl-10 pr-3 text-sm placeholder:text-gray-500 focus:outline-none"
+                  />
+                </div>
+
+                <p className="text-sm text-gray-400">
+                  Estimated Tokens: {buyQuote.toFixed(2)}
+                </p>
+                <button
+                  onClick={handleBuy}
+                  className="mt-6 w-full py-3 rounded-xl  font-medium flex items-center justify-center gap-2 bg-[#3eb66a] text-white hover:opacity-90 transition-opacity"
+                >
+                  <Zap className="w-5 h-5" />
+                  Buy Tokens
+                </button>
+              </div>
+            ) : (
+              <div className="relative">
+                <div className="relative w-full">
+                  {/* Wallet Icon on the Left */}
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                    <Wallet size={20} className="text-gray-500" />
+                  </div>
+
+                  {/* Input Field */}
+                  <input
+                    type="number"
+                    value={tokenInput}
+                    onChange={handleTokenInputChange}
+                    placeholder="Enter Token Amount"
+                    className="w-full bg-[#1C1C1C] rounded-xl py-2.5 pl-10 pr-3 text-sm placeholder:text-gray-500 focus:outline-none"
+                  />
+                </div>
+
+                <p className="text-sm text-gray-400">
+                  Estimated SOL: {sellQuote.toFixed(6)}
+                </p>
+                <button
+                  onClick={handleSell}
+                  className="mt-6 w-full py-3 rounded-xl  font-medium flex items-center justify-center gap-2 bg-[#F87171] text-white hover:opacity-90 transition-opacity"
+                >
+                  <Zap className="w-5 h-5" />
+                  Sell Tokens
+                </button>
+              </div>
+            )}
+            {message && (
+              <div className="text-lg font-semibold mt-4">{message}</div>
+            )}
+          </div>
         </div>
-
-        {activeTab === "buy" ? (
-          <div className="relative">
-            <input
-              type="number"
-              value={solInput}
-              onChange={handleSolInputChange}
-              placeholder="Enter SOL Amount"
-              className="w-full bg-[#1C1C1C] rounded-xl py-2.5 px-3 text-sm placeholder:text-gray-500 focus:outline-none"
-            />
-            <p className="text-sm text-gray-400">
-              Estimated Tokens: {buyQuote.toFixed(2)}
-            </p>
-            <button
-              onClick={handleBuy}
-              className="mt-6 w-full py-3 rounded-xl text-black font-medium flex items-center justify-center gap-2 bg-gradient-to-r from-[#00FF85] to-yellow-400 hover:opacity-90 transition-opacity"
-            >
-              <Zap className="w-5 h-5" />
-              Buy Tokens
-            </button>
-          </div>
-        ) : (
-          <div className="relative">
-            <input
-              type="number"
-              value={tokenInput}
-              onChange={handleTokenInputChange}
-              placeholder="Enter Token Amount"
-              className="w-full bg-[#1C1C1C] rounded-xl py-2.5 px-3 text-sm placeholder:text-gray-500 focus:outline-none"
-            />
-            <p className="text-sm text-gray-400">
-              Estimated SOL: {sellQuote.toFixed(6)}
-            </p>
-            <button
-              onClick={handleSell}
-              className="mt-6 w-full py-3 rounded-xl text-black font-medium flex items-center justify-center gap-2 bg-gradient-to-r from-[#00FF85] to-yellow-400 hover:opacity-90 transition-opacity"
-            >
-              <Zap className="w-5 h-5" />
-              Sell Tokens
-            </button>
-          </div>
-        )}
-        {message && <div className="text-lg font-semibold mt-4">{message}</div>}
+      </div>
+      <div className="flex-1 w-full max-w-lg mt-6">
+        <TransactionHistory txHistory={txHistory} />
       </div>
     </div>
   );

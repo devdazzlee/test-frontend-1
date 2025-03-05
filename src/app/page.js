@@ -1,3 +1,5 @@
+"use client";
+
 import BuySellPanel from "@/Components/Buysellpanel";
 export default function Page() {
   return (
