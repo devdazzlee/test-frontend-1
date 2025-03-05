@@ -3,6 +3,7 @@
 import { PumpFunAmm } from "@/utils/pump-fun-final";
 import { CircleArrowDown, CircleArrowUp, Wallet, Zap } from "lucide-react";
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import LabelValueRow from "./LabelValueRow/LabelValueRow";
 import Image from "next/image";
 import TransactionHistory from "./TransactionHistory/TransactionHistory";
@@ -28,7 +29,7 @@ export default function BuySellPanel() {
     tokenReserves: 0,
     solReserves: 0,
   });
-
+  const balancePercentage = (userBalance.solBalance / 100) * 100; // Assuming 100 SOL is the
   const resetAmm = () => {
     const newAmm = new PumpFunAmm();
     const _state = newAmm.getState();
@@ -185,6 +186,14 @@ export default function BuySellPanel() {
                 label="Pump Fun Token Balance"
                 value={ammState.realTokenBalance.toFixed(2)}
                 imageSrc={PumpFunLogo}
+              />
+            </div>
+            <div className="relative w-full h-2 bg-gray-700 rounded-full mt-1 overflow-hidden">
+              <motion.div
+                className="absolute top-0 left-0 h-full bg-gradient-to-r from-green-400 to-green-600 rounded-full"
+                initial={{ width: 0 }}
+                animate={{ width: `${balancePercentage}%` }}
+                transition={{ duration: 1.5, ease: "easeOut" }}
               />
             </div>
 
