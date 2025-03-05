@@ -165,8 +165,8 @@ export default function BuySellPanel() {
 
   return (
     <div>
-      <h1 className=" mt-6 text-6xl font-extrabold text-center bg-gradient-to-r from-[#00FF85] to-yellow-400 text-transparent bg-clip-text drop-shadow-[0_0_10px_rgba(0,255,133,0.6)] animate-text-glow">
-        PUMP FUN
+      <h1 className=" mt-6 text-4xl font-extrabold text-center bg-gradient-to-r from-[#00FF85] to-yellow-400 text-transparent bg-clip-text drop-shadow-[0_0_10px_rgba(0,255,133,0.6)] animate-text-glow">
+        PUMP FUN SIMULATOR
       </h1>
 
       <div className="flex flex-wrap justify-center">
