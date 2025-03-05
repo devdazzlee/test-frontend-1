@@ -5,6 +5,10 @@
   --foreground: #171717;
 }
 
+.links-main-div {
+  border-radius: 6px;
+  border: 1px solid #333;
+}
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
