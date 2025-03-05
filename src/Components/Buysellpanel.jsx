@@ -129,22 +129,24 @@ export default function BuySellPanel() {
         PUMP FUN
       </h1>
 
-      <LabelValueRow
-        label="Your Sol Balance"
-        value={userBalance.solBalance.toFixed(2)}
-      />
-      <LabelValueRow
-        label="Your Token balance"
-        value={userBalance.tokenBalance.toFixed(2)}
-      />
-      <LabelValueRow
-        label="Pump Fun Sol Balance"
-        value={ammState.realSolBalance.toFixed(2)}
-      />
-      <LabelValueRow
-        label="Pump Fun Token Balance"
-        value={ammState.realTokenBalance.toFixed(2)}
-      />
+      <div className="mt-4" >
+        <LabelValueRow
+          label="Your Sol Balance"
+          value={userBalance.solBalance.toFixed(2)}
+        />
+        <LabelValueRow
+          label="Your Token balance"
+          value={userBalance.tokenBalance.toFixed(2)}
+        />
+        <LabelValueRow
+          label="Pump Fun Sol Balance"
+          value={ammState.realSolBalance.toFixed(2)}
+        />
+        <LabelValueRow
+          label="Pump Fun Token Balance"
+          value={ammState.realTokenBalance.toFixed(2)}
+        />
+      </div>
 
       <div className="space-y-3 mt-4">
         <div className="flex buy-sell-tab rounded-full p-1 mb-4">

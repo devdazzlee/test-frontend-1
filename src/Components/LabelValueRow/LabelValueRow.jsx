@@ -9,15 +9,15 @@ const LabelValueRow = ({
 }) => {
   return (
     <div
-      className={`grid grid-cols-2 gap-2 border border-[#333] divide-x divide-[#333]  ${containerClassName}`}
+      className={`grid grid-cols-2 border border-[#333] rounded mb-2 ${containerClassName}`}
     >
       <div
-        className={`flex items-center justify-center py-2 text-white hover:bg-[#2C2C2C] transition-colors ${labelClassName}`}
+        className={`flex items-center justify-start px-4 py-2 text-white ${labelClassName}`}
       >
         <span className="text-sm text-gray-400">{label}</span>
       </div>
       <div
-        className={`flex items-center justify-center py-3 text-white hover:bg-[#2C2C2C] transition-colors ${valueClassName}`}
+        className={`flex items-center justify-end px-4 py-2 text-white ${valueClassName}`}
       >
         <span className="text-sm text-gray-400">{value}</span>
       </div>
