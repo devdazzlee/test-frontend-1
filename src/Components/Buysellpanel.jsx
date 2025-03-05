@@ -23,13 +23,14 @@ export default function BuySellPanel() {
 
   const [buyQuote, setBuyQuote] = useState(0);
   const [sellQuote, setSellQuote] = useState(0);
+  const [progress, setProgress] = useState(0);
   const [ammState, setAmmState] = useState({
     realTokenBalance: 0,
     realSolBalance: 0,
     tokenReserves: 0,
     solReserves: 0,
   });
-  const balancePercentage = (userBalance.solBalance / 100) * 100; // Assuming 100 SOL is the
+
   const resetAmm = () => {
     const newAmm = new PumpFunAmm();
     const _state = newAmm.getState();
@@ -122,7 +123,9 @@ export default function BuySellPanel() {
   const refreshAmmState = () => {
     if (!amm) return;
     const _state = amm.getState();
+    const _progress = amm.getProgess();
     setAmmState(_state);
+    setProgress(_progress);
   };
 
   const handleSolInputChange = (e) => {
@@ -192,7 +195,7 @@ export default function BuySellPanel() {
               <motion.div
                 className="absolute top-0 left-0 h-full bg-gradient-to-r from-green-400 to-green-600 rounded-full"
                 initial={{ width: 0 }}
-                animate={{ width: `${balancePercentage}%` }}
+                animate={{ width: `${progress}%` }}
                 transition={{ duration: 1.5, ease: "easeOut" }}
               />
             </div>
