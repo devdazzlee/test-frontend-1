@@ -25,6 +25,7 @@ export default function BuySellPanel() {
   const [buyQuote, setBuyQuote] = useState(0);
   const [sellQuote, setSellQuote] = useState(0);
   const [progress, setProgress] = useState(0);
+  console.log("🚀 ~ BuySellPanel ~ progress:", progress)
   const [ammState, setAmmState] = useState({
     realTokenBalance: 0,
     realSolBalance: 0,
@@ -125,6 +126,7 @@ export default function BuySellPanel() {
     if (!amm) return;
     const _state = amm.getState();
     const _progress = amm.getProgess();
+    console.log("🚀 ~ refreshAmmState ~ _progress:", _progress)
     setAmmState(_state);
     setProgress(_progress);
   };

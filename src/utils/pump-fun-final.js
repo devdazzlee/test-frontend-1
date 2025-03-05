@@ -18,10 +18,10 @@ export class PumpFunAmm {
     this.K = this.solReserves * this.tokenReserves;
   }
   getProgess() {
-    const progress =
-      ((this.initialRealTokenBalance-this.realTokenBalance / this.initialRealTokenBalance) * 100).toFixed(2);
-    console.log("🚀 Progress:", parseFloat(progress));
-    return parseFloat(progress);
+    const _left =(this.realTokenBalance / this.initialRealTokenBalance) * 100
+     const  progress = 100 - _left;
+    console.log("🚀 Progress: xxxxxxxxxxxxxxxxxx", progress);
+    return progress;
   }
   getState() {
     console.log("🚀 this.realTokenBalance:", this.realTokenBalance);
@@ -29,6 +29,10 @@ export class PumpFunAmm {
 
     console.log("🚀 this.tokenReserves:", this.tokenReserves);
     console.log("🚀 this.solReserves:", this.solReserves);
+    console.log(
+      "🚀 this.initialRealTokenBalance:",
+      this.initialRealTokenBalance
+    );
 
     return {
       realTokenBalance: this.realTokenBalance,
