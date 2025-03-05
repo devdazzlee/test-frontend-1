@@ -1,34 +1,73 @@
 "use client";
 
 import { PumpFunAmm } from "@/utils/pump-fun-final";
-import {
-  CircleArrowDown,
-  CircleArrowUp,
-  Zap,
-} from "lucide-react";
+import { CircleArrowDown, CircleArrowUp, Zap } from "lucide-react";
 import { useState, useEffect } from "react";
 import LabelValueRow from "./LabelValueRow/LabelValueRow";
 
 export default function BuySellPanel() {
   const [amm, setAmm] = useState(null);
+  const [userBalance, setUserBalance] = useState({
+    solBalance: 100,
+    tokenBalance: 0,
+  });
   const [activeTab, setActiveTab] = useState("buy");
   const [solInput, setSolInput] = useState("");
   const [tokenInput, setTokenInput] = useState("");
   const [message, setMessage] = useState("");
+  const [ammState, setAmmState] = useState({
+    realTokenBalance: 0,
+    realSolBalance: 0,
+    tokenReserves: 0,
+    solReserves: 0,
+  });
+
+  const resetAmm = () => {
+    const newAmm = new PumpFunAmm();
+    const _state = newAmm.getState();
+    setAmm(newAmm);
+    setAmmState(_state);
+  };
 
   useEffect(() => {
-    setAmm(new PumpFunAmm());
-  }, []);
+    if (!amm) {
+      resetAmm();
+      setUserBalance({
+        solBalance: 100,
+        tokenBalance: 0,
+      })
+    }
+  }, [amm]);
 
   const handleBuy = () => {
     if (!amm) return;
     const solAmount = parseFloat(solInput);
-    if (isNaN(solAmount) || solAmount <= 0) {
+    if (isNaN(solAmount)) {
       setMessage("Enter a valid SOL amount");
       return;
     }
+    if (solAmount <= 0) {
+      setMessage("Enter a valid SOL amount greater than zero");
+      return;
+    }
+    if (solAmount>userBalance.solBalance) {
+      setMessage("Not enough SOL available");
+      return;
+    }
     const tokensReceived = amm.buyTokens(solAmount);
+    setUserBalance((prev) => ({
+      solBalance: prev.solBalance - solAmount,
+      tokenBalance: prev.tokenBalance + tokensReceived,
+    }));
+    setSolInput("");
+    refreshAmmState();
     setMessage(`Bought ${tokensReceived.toFixed(2)} tokens`);
+  };
+
+  const refreshAmmState = () => {
+    if (!amm) return;
+    const _state = amm.getState();
+    setAmmState(_state);
   };
 
   const handleSell = () => {
@@ -39,19 +78,41 @@ export default function BuySellPanel() {
       return;
     }
     const solReceived = amm.sellTokens(tokenAmount);
+    setUserBalance((prev) => ({
+      solBalance: prev.solBalance + solReceived,
+      tokenBalance: prev.tokenBalance - tokenAmount,
+    }));
+    setTokenInput("");
+    refreshAmmState();
     setMessage(`Received ${solReceived.toFixed(6)} SOL`);
   };
 
+  if (!amm) {
+    return <>Loading...</>;
+  }
+
   return (
-    <div className="w-1/3 mx-auto stats-card rounded-2xl p-4 text-white my-4 ">
+    <div className="w-1/3 mx-auto stats-card rounded-2xl p-4 text-white my-6 ">
       <h1 className="text-6xl font-extrabold text-center bg-gradient-to-r from-[#00FF85] to-yellow-400 text-transparent bg-clip-text drop-shadow-[0_0_10px_rgba(0,255,133,0.6)] animate-text-glow">
         PUMP FUN
       </h1>
 
-      <LabelValueRow label="Sol Balance" value="value here..." />
-      <LabelValueRow label="Token balance" value="value here..." />
-      <LabelValueRow label="Pump Fun Sol Balance" value="value here..." />
-      <LabelValueRow label="Pump Fun Token Balance" value="value here..." />
+      <LabelValueRow
+        label="Your Sol Balance"
+        value={userBalance.solBalance.toFixed(2)}
+      />
+      <LabelValueRow
+        label="Your Token balance"
+        value={userBalance.tokenBalance.toFixed(2)}
+      />
+      <LabelValueRow
+        label="Pump Fun Sol Balance"
+        value={ammState.realSolBalance.toFixed(2)}
+      />
+      <LabelValueRow
+        label="Pump Fun Token Balance"
+        value={ammState.realTokenBalance.toFixed(2)}
+      />
 
       <div className="space-y-3 mt-4">
         <div className="flex buy-sell-tab rounded-full p-1 mb-4">

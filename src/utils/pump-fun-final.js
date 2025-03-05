@@ -29,7 +29,12 @@ export class PumpFunAmm {
     console.log("🚀 this.tokenReserves:", this.tokenReserves);
     console.log("🚀 this.solReserves:", this.solReserves);
 
-    
+    return {
+      realTokenBalance: this.realTokenBalance,
+      realSolBalance: this.realSolBalance,
+      tokenReserves: this.tokenReserves,
+      solReserves: this.solReserves,
+    }
   }
 
   // Buy Tokens with SOL
