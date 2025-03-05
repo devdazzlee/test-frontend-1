@@ -6,6 +6,10 @@ import { useState, useEffect } from "react";
 import LabelValueRow from "./LabelValueRow/LabelValueRow";
 
 export default function BuySellPanel() {
+  const [txHistory, setTxHistory] = useState([]);
+  //{}
+
+
   const [amm, setAmm] = useState(null);
   const [userBalance, setUserBalance] = useState({
     solBalance: 100,
@@ -53,6 +57,20 @@ export default function BuySellPanel() {
       return;
     }
     const tokensReceived = amm.buyTokens(solAmount);
+
+    const newTx = {
+      type:"buy",
+      sellAmount:{
+        amount: solAmount,
+        currency: "SOL",
+      },
+      buyAmount:{
+        amount: tokensReceived,
+        currency: "TOKEN",
+      }
+    }
+    setTxHistory([newTx,...txHistory]);
+    
     setUserBalance((prev) => ({
       solBalance: prev.solBalance - solAmount,
       tokenBalance: prev.tokenBalance + tokensReceived,
@@ -75,6 +93,21 @@ export default function BuySellPanel() {
       return;
     }
     const solReceived = amm.sellTokens(tokenAmount);
+
+    const newTx = {
+      type:"sell",
+      sellAmount:{
+        amount: tokenAmount,
+        currency: "TOKEN",
+      },
+      buyAmount:{
+        amount: solReceived,
+        currency: "SOL",
+      }
+    }
+    setTxHistory([newTx,...txHistory]);
+
+
     setUserBalance((prev) => ({
       solBalance: prev.solBalance + solReceived,
       tokenBalance: prev.tokenBalance - tokenAmount,
