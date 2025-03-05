@@ -19,9 +19,9 @@ export class PumpFunAmm {
   }
   getProgess() {
     const progress =
-      1 - (this.realTokenBalance / this.initialRealTokenBalance) * 100;
-    console.log("🚀 Progress:", progress);
-    return progress;
+      ((this.initialRealTokenBalance-this.realTokenBalance / this.initialRealTokenBalance) * 100).toFixed(2);
+    console.log("🚀 Progress:", parseFloat(progress));
+    return parseFloat(progress);
   }
   getState() {
     console.log("🚀 this.realTokenBalance:", this.realTokenBalance);
