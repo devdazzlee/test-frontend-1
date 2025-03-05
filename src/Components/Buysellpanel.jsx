@@ -10,6 +10,7 @@ import TransactionHistory from "./TransactionHistory/TransactionHistory";
 import SolanaLogo from "../../public/images/solana.png";
 import PumpFunLogo from "../../public/images/Pump_fun_logo.png";
 import HomeLoader from "./Skeleton/HomeLoader";
+import { toast } from "react-toastify";
 export default function BuySellPanel() {
   const [txHistory, setTxHistory] = useState([]);
   const [amm, setAmm] = useState(null);
@@ -51,11 +52,11 @@ export default function BuySellPanel() {
     if (!amm) return;
     const solAmount = parseFloat(solInput);
     if (isNaN(solAmount) || solAmount <= 0) {
-      setMessage("Enter a valid SOL amount greater than zero");
+      toast.error("Enter a valid SOL amount greater than zero");
       return;
     }
     if (solAmount > userBalance.solBalance) {
-      setMessage("Not enough SOL available");
+      toast.error("Not enough SOL available");
       return;
     }
     const tokensReceived = amm.buyTokens(solAmount);
@@ -79,7 +80,7 @@ export default function BuySellPanel() {
     }));
     setSolInput("");
     refreshAmmState();
-    setMessage(`Bought ${tokensReceived.toFixed(2)} tokens`);
+    toast.success(`Bought ${tokensReceived.toFixed(2)} tokens`);
     setBuyQuote(0);
   };
 
@@ -87,11 +88,11 @@ export default function BuySellPanel() {
     if (!amm) return;
     const tokenAmount = parseFloat(tokenInput);
     if (isNaN(tokenAmount) || tokenAmount <= 0) {
-      setMessage("Enter a valid token amount greater than zero");
+      toast.error("Enter a valid token amount greater than zero");
       return;
     }
     if (tokenAmount > userBalance.tokenBalance) {
-      setMessage("Not enough token available");
+      toast.error("Not enough token available");
       return;
     }
     const solReceived = amm.sellTokens(tokenAmount);
@@ -115,7 +116,7 @@ export default function BuySellPanel() {
     }));
     setTokenInput("");
     refreshAmmState();
-    setMessage(`Received ${solReceived.toFixed(6)} SOL`);
+    toast.success(`Received ${solReceived.toFixed(6)} SOL`);
     setSellQuote(0);
   };
 
