@@ -124,6 +124,9 @@ export class PumpFunAmm {
         newSolReserves: this.solReserves,
       };
     }
+    if(_token>this.tokenReserves){
+      _token = this.tokenReserves
+    }
 
     const fee = 0; // Apply 0.3% fee
     const effectiveTokens = _token - fee; // Adjust for fee

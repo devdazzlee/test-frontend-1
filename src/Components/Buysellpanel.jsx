@@ -15,6 +15,8 @@ export default function BuySellPanel() {
   const [solInput, setSolInput] = useState("");
   const [tokenInput, setTokenInput] = useState("");
   const [message, setMessage] = useState("");
+  const [buyQuote, setBuyQuote] = useState(0);
+  const [sellQuote, setSellQuote] = useState(0);
   const [ammState, setAmmState] = useState({
     realTokenBalance: 0,
     realSolBalance: 0,
@@ -35,22 +37,18 @@ export default function BuySellPanel() {
       setUserBalance({
         solBalance: 100,
         tokenBalance: 0,
-      })
+      });
     }
   }, [amm]);
 
   const handleBuy = () => {
     if (!amm) return;
     const solAmount = parseFloat(solInput);
-    if (isNaN(solAmount)) {
-      setMessage("Enter a valid SOL amount");
-      return;
-    }
-    if (solAmount <= 0) {
+    if (isNaN(solAmount) || solAmount <= 0) {
       setMessage("Enter a valid SOL amount greater than zero");
       return;
     }
-    if (solAmount>userBalance.solBalance) {
+    if (solAmount > userBalance.solBalance) {
       setMessage("Not enough SOL available");
       return;
     }
@@ -62,19 +60,18 @@ export default function BuySellPanel() {
     setSolInput("");
     refreshAmmState();
     setMessage(`Bought ${tokensReceived.toFixed(2)} tokens`);
-  };
-
-  const refreshAmmState = () => {
-    if (!amm) return;
-    const _state = amm.getState();
-    setAmmState(_state);
+    setBuyQuote(0);
   };
 
   const handleSell = () => {
     if (!amm) return;
     const tokenAmount = parseFloat(tokenInput);
     if (isNaN(tokenAmount) || tokenAmount <= 0) {
-      setMessage("Enter a valid token amount");
+      setMessage("Enter a valid token amount greater than zero");
+      return;
+    }
+    if (tokenAmount > userBalance.tokenBalance) {
+      setMessage("Not enough token available");
       return;
     }
     const solReceived = amm.sellTokens(tokenAmount);
@@ -85,6 +82,41 @@ export default function BuySellPanel() {
     setTokenInput("");
     refreshAmmState();
     setMessage(`Received ${solReceived.toFixed(6)} SOL`);
+    setSellQuote(0);
+  };
+
+  const refreshAmmState = () => {
+    if (!amm) return;
+    const _state = amm.getState();
+    setAmmState(_state);
+  };
+
+  const handleSolInputChange = (e) => {
+    setSolInput(e.target.value);
+    if (amm && e.target.value) {
+      const solAmount = parseFloat(e.target.value);
+      if (!isNaN(solAmount) && solAmount > 0) {
+        setBuyQuote(amm.getTokenFrom(solAmount).tokensBought);
+      } else {
+        setBuyQuote(0);
+      }
+    } else {
+      setBuyQuote(0);
+    }
+  };
+
+  const handleTokenInputChange = (e) => {
+    setTokenInput(e.target.value);
+    if (amm && e.target.value) {
+      const tokenAmount = parseFloat(e.target.value);
+      if (!isNaN(tokenAmount) && tokenAmount > 0) {
+        setSellQuote(amm.getSolFrom(tokenAmount).solReceived);
+      } else {
+        setSellQuote(0);
+      }
+    } else {
+      setSellQuote(0);
+    }
   };
 
   if (!amm) {
@@ -123,8 +155,9 @@ export default function BuySellPanel() {
             <button
               key={label}
               onClick={() => setActiveTab(label)}
-              className={`flex-1 flex items-center justify-start gap-2 py-2 px-4 rounded-full text-sm font-medium transition-colors
-        ${activeTab === label ? "bg-[#2C2C2C]" : "text-gray-400"}`}
+              className={`flex-1 flex items-center justify-start gap-2 py-2 px-4 rounded-full text-sm font-medium transition-colors ${
+                activeTab === label ? "bg-[#2C2C2C]" : "text-gray-400"
+              }`}
             >
               {icon}
               {label.charAt(0).toUpperCase() + label.slice(1)}
@@ -134,16 +167,16 @@ export default function BuySellPanel() {
 
         {activeTab === "buy" ? (
           <div className="relative">
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-[#00FF85] font-medium">
-              C
-            </div>
             <input
               type="number"
               value={solInput}
-              onChange={(e) => setSolInput(e.target.value)}
+              onChange={handleSolInputChange}
               placeholder="Enter SOL Amount"
-              className="w-full bg-[#1C1C1C] rounded-xl py-2.5 pl-8 pr-3 text-sm placeholder:text-gray-500 focus:outline-none"
+              className="w-full bg-[#1C1C1C] rounded-xl py-2.5 px-3 text-sm placeholder:text-gray-500 focus:outline-none"
             />
+            <p className="text-sm text-gray-400">
+              Estimated Tokens: {buyQuote.toFixed(2)}
+            </p>
             <button
               onClick={handleBuy}
               className="mt-6 w-full py-3 rounded-xl text-black font-medium flex items-center justify-center gap-2 bg-gradient-to-r from-[#00FF85] to-yellow-400 hover:opacity-90 transition-opacity"
@@ -154,16 +187,16 @@ export default function BuySellPanel() {
           </div>
         ) : (
           <div className="relative">
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-[#00FF85] font-medium">
-              C
-            </div>
             <input
               type="number"
               value={tokenInput}
-              onChange={(e) => setTokenInput(e.target.value)}
+              onChange={handleTokenInputChange}
               placeholder="Enter Token Amount"
-              className="w-full bg-[#1C1C1C] rounded-xl py-2.5 pl-8 pr-3 text-sm placeholder:text-gray-500 focus:outline-none"
+              className="w-full bg-[#1C1C1C] rounded-xl py-2.5 px-3 text-sm placeholder:text-gray-500 focus:outline-none"
             />
+            <p className="text-sm text-gray-400">
+              Estimated SOL: {sellQuote.toFixed(6)}
+            </p>
             <button
               onClick={handleSell}
               className="mt-6 w-full py-3 rounded-xl text-black font-medium flex items-center justify-center gap-2 bg-gradient-to-r from-[#00FF85] to-yellow-400 hover:opacity-90 transition-opacity"
