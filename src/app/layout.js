@@ -12,8 +12,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Pump Fun",
-  description: "Pump Fun",
+  title: "Pump Fun Simulator",
+  description: "Pump Fun Simulator",
 };
 
 export default function RootLayout({ children }) {

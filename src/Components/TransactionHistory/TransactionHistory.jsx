@@ -7,14 +7,14 @@ const TransactionHistory = ({ txHistory }) => {
         Transaction History
       </h2> */}
       <div className="overflow-y-auto max-h-80 ">
-        <table className="w-full border-collapse border-1 border-gray-400  rounded-xl">
-          <thead className="sticky top-0 bg-gray-900 text-white">
+        <table className="w-full  border-1 border-[#333]  rounded-2xl">
+          <thead className="sticky top-0 bg-transparent ">
             <tr>
-              <th className="px-4 py-3 border-b border-gray-700">Type</th>
-              <th className="px-4 py-3 border-b border-gray-700">
+              <th className="px-4 py-3 border-b border-[#333] text-sm text-gray-400">Type</th>
+              <th className="px-4 py-3 border-b border-[#333] text-sm text-gray-400">
                 Sell Amount
               </th>
-              <th className="px-4 py-3 border-b border-gray-700">Buy Amount</th>
+              <th className="px-4 py-3 border-b border-[#333] text-sm text-gray-400">Buy Amount</th>
             </tr>
           </thead>
           <tbody>
@@ -40,8 +40,8 @@ const TransactionHistory = ({ txHistory }) => {
                 </tr>
               ))
             ) : (
-              <tr className="text-center bg-transparent text-white hover:bg-gray-600 transition">
-                <td  colSpan={3} className={`px-4 py-3 font-bold  `}>  No Transactions Found !</td>
+              <tr className="text-center bg-transparent text-white hover:bg-gray-700 transition">
+                <td  colSpan={3} className={`px-4 py-3 font-bold text-sm text-gray-400 `}>  No Transactions Found !</td>
               </tr>
             )}
           </tbody>

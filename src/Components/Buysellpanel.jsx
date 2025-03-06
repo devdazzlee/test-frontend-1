@@ -11,6 +11,9 @@ import SolanaLogo from "../../public/images/solana.png";
 import PumpFunLogo from "../../public/images/Pump_fun_logo.png";
 import HomeLoader from "./Skeleton/HomeLoader";
 import { toast } from "react-toastify";
+import PumpFunPriceChart from "./PumpFunPriceChart/PumpFunPriceChart";
+import PulseChart from "./PumpFunPriceChart/PulseChart";
+import TradeHistory from "./TradeHistory/TradeHistory";
 export default function BuySellPanel() {
   const [txHistory, setTxHistory] = useState([]);
   const [amm, setAmm] = useState(null);
@@ -25,12 +28,12 @@ export default function BuySellPanel() {
   const [buyQuote, setBuyQuote] = useState(0);
   const [sellQuote, setSellQuote] = useState(0);
   const [progress, setProgress] = useState(0);
-  console.log("🚀 ~ BuySellPanel ~ progress:", progress)
   const [ammState, setAmmState] = useState({
     realTokenBalance: 0,
     realSolBalance: 0,
     tokenReserves: 0,
     solReserves: 0,
+    initialRealTokenBalance: 0,
   });
 
   const resetAmm = () => {
@@ -73,6 +76,7 @@ export default function BuySellPanel() {
         amount: tokensReceived,
         currency: "TOKEN",
       },
+      date: new Date(),
     };
     setTxHistory([newTx, ...txHistory]);
 
@@ -109,6 +113,7 @@ export default function BuySellPanel() {
         amount: solReceived,
         currency: "SOL",
       },
+      date: new Date(),
     };
     setTxHistory([newTx, ...txHistory]);
 
@@ -126,7 +131,6 @@ export default function BuySellPanel() {
     if (!amm) return;
     const _state = amm.getState();
     const _progress = amm.getProgess();
-    console.log("🚀 ~ refreshAmmState ~ _progress:", _progress)
     setAmmState(_state);
     setProgress(_progress);
   };
@@ -173,6 +177,11 @@ export default function BuySellPanel() {
         <div>
           <div className="w-full  mx-auto stats-card rounded-2xl p-4 text-white my-6">
             <div className="mt-2">
+              <LabelValueRow
+                label="Current Token Price"
+                value={parseFloat(amm.getSolFrom(1).solReceived)}
+                imageSrc={SolanaLogo}
+              />
               <LabelValueRow
                 label="Your Sol Balance"
                 value={userBalance.solBalance.toFixed(2)}
@@ -300,6 +309,20 @@ export default function BuySellPanel() {
         <div className="flex-1 w-full max-w-lg mt-2">
           <TransactionHistory txHistory={txHistory} />
         </div>
+      </div>
+      <div className="container mx-auto">
+        <PumpFunPriceChart
+          tokenSold={
+            ammState.initialRealTokenBalance - ammState.realTokenBalance
+          }
+          currentPrice={parseFloat(
+            amm.getSolFrom(1000000).solReceived.toFixed(6)
+          )}
+        />
+        {/* <TradeHistory transactions={txHistory}/> */}
+        {/* <div style={{ position: "relative", width: "100%", height: "500px" }}>
+          <PulseChart data={priceData} />
+        </div> */}
       </div>
     </div>
   );
