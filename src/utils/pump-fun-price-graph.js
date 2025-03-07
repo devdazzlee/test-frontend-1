@@ -801,126 +801,65 @@ export const pumpFunAmmPriceGraph = (tokenSold, currentPrice) => [
   { tokenAmount: 793000000, solAmount: 0.406223 },
 ];
 
-
 export const dummyTxHistory = [
   {
-    type: "sell",
-    sellAmount: {
-      amount: 50,
-      currency: "TOKEN",
-    },
-    buyAmount: {
-      amount: 2.5,
-      currency: "SOL",
-    },
-    date: new Date("2025-03-01T10:00:00Z"),
+    type: "buy",
+    sellAmount: { amount: 3.57, currency: "SOL" },
+    buyAmount: { amount: 246.37, currency: "TOKEN" },
+    date: "2025-03-07T09:13:28.241Z",
   },
   {
     type: "buy",
-    sellAmount: {
-      amount: 3,
-      currency: "SOL",
-    },
-    buyAmount: {
-      amount: 60,
-      currency: "TOKEN",
-    },
-    date: new Date("2025-03-01T11:00:00Z"),
-  },
-  {
-    type: "sell",
-    sellAmount: {
-      amount: 20,
-      currency: "TOKEN",
-    },
-    buyAmount: {
-      amount: 1,
-      currency: "SOL",
-    },
-    date: new Date("2025-03-01T12:00:00Z"),
+    sellAmount: { amount: 2.73, currency: "SOL" },
+    buyAmount: { amount: 198.51, currency: "TOKEN" },
+    date: "2025-03-07T09:13:24.241Z",
   },
   {
     type: "buy",
-    sellAmount: {
-      amount: 5,
-      currency: "SOL",
-    },
-    buyAmount: {
-      amount: 100,
-      currency: "TOKEN",
-    },
-    date: new Date("2025-03-01T13:00:00Z"),
+    sellAmount: { amount: 1.33, currency: "SOL" },
+    buyAmount: { amount: 99.8, currency: "TOKEN" },
+    date: "2025-03-07T09:13:22.241Z",
   },
   {
     type: "sell",
-    sellAmount: {
-      amount: 15,
-      currency: "TOKEN",
-    },
-    buyAmount: {
-      amount: 0.75,
-      currency: "SOL",
-    },
-    date: new Date("2025-03-01T14:00:00Z"),
+    sellAmount: { amount: 372.13, currency: "TOKEN" },
+    buyAmount: { amount: 2.72, currency: "SOL" },
+    date: "2025-03-07T09:13:19.241Z",
   },
   {
     type: "buy",
-    sellAmount: {
-      amount: 2,
-      currency: "SOL",
-    },
-    buyAmount: {
-      amount: 40,
-      currency: "TOKEN",
-    },
-    date: new Date("2025-03-01T15:00:00Z"),
+    sellAmount: { amount: 1.81, currency: "SOL" },
+    buyAmount: { amount: 173.82, currency: "TOKEN" },
+    date: "2025-03-07T09:13:16.241Z",
+  },
+  {
+    type: "buy",
+    sellAmount: { amount: 3.13, currency: "SOL" },
+    buyAmount: { amount: 222.0, currency: "TOKEN" },
+    date: "2025-03-07T09:12:59.241Z",
+  },
+  {
+    type: "buy",
+    sellAmount: { amount: 0.19, currency: "SOL" },
+    buyAmount: { amount: 14.22, currency: "TOKEN" },
+    date: "2025-03-07T09:12:53.241Z",
   },
   {
     type: "sell",
-    sellAmount: {
-      amount: 30,
-      currency: "TOKEN",
-    },
-    buyAmount: {
-      amount: 1.5,
-      currency: "SOL",
-    },
-    date: new Date("2025-03-01T16:00:00Z"),
+    sellAmount: { amount: 275.36, currency: "TOKEN" },
+    buyAmount: { amount: 2.8, currency: "SOL" },
+    date: "2025-03-07T09:12:47.241Z",
   },
   {
     type: "buy",
-    sellAmount: {
-      amount: 6,
-      currency: "SOL",
-    },
-    buyAmount: {
-      amount: 120,
-      currency: "TOKEN",
-    },
-    date: new Date("2025-03-01T17:00:00Z"),
-  },
-  {
-    type: "sell",
-    sellAmount: {
-      amount: 10,
-      currency: "TOKEN",
-    },
-    buyAmount: {
-      amount: 0.5,
-      currency: "SOL",
-    },
-    date: new Date("2025-03-01T18:00:00Z"),
+    sellAmount: { amount: 4.85, currency: "SOL" },
+    buyAmount: { amount: 293.84, currency: "TOKEN" },
+    date: "2025-03-07T09:12:45.241Z",
   },
   {
     type: "buy",
-    sellAmount: {
-      amount: 4,
-      currency: "SOL",
-    },
-    buyAmount: {
-      amount: 80,
-      currency: "TOKEN",
-    },
-    date: new Date("2025-03-01T19:00:00Z"),
+    sellAmount: { amount: 3.21, currency: "SOL" },
+    buyAmount: { amount: 208.39, currency: "TOKEN" },
+    date: "2025-03-07T09:12:24.241Z",
   },
 ];

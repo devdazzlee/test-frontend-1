@@ -14,6 +14,8 @@ import { toast } from "react-toastify";
 import PumpFunPriceChart from "./PumpFunPriceChart/PumpFunPriceChart";
 import PulseChart from "./PumpFunPriceChart/PulseChart";
 import TradeHistory from "./TradeHistory/TradeHistory";
+import { groupBy30s } from "@/utils/helper";
+import { dummyTxHistory } from "@/utils/pump-fun-price-graph";
 export default function BuySellPanel() {
   const [txHistory, setTxHistory] = useState([]);
   const [amm, setAmm] = useState(null);
@@ -162,6 +164,8 @@ export default function BuySellPanel() {
       setSellQuote(0);
     }
   };
+
+  const result = groupBy30s(dummyTxHistory);
 
   if (!amm) {
     return <HomeLoader />;
