@@ -134,7 +134,7 @@ class PumpFunAmm {
       tokensBought = this.realTokenBalance;
     }
 
-    console.log(_sol, " SOL", "====>", tokensBought, " Token");
+    // console.log(_sol, " SOL", "====>", tokensBought, " Token");
 
     return { tokensBought, newSolReserves, newTokenReserves };
   }
@@ -168,7 +168,7 @@ class PumpFunAmm {
     // Ensure we don't exceed available SOL supply
     solReceived = Math.min(solReceived, this.solReserves);
 
-    console.log(_token, "Token", "====>", solReceived, "SOL");
+    // console.log(_token, "Token", "====>", solReceived, "SOL");
 
     return { solReceived, newTokenReserves, newSolReserves };
   }
@@ -199,7 +199,7 @@ class PumpFunAmm {
 
 
 
-    console.log(_token, "Token", "====>", solPaid, "SOL");
+    // console.log(_token, "Token", "====>", solPaid, "SOL");
 
     return { solPaid, newTokenReserves, newSolReserves };
   }

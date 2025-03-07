@@ -84,7 +84,7 @@ const getOHLC = (transactions) => {
 };
 
 // Function to group transactions by 30s intervals
-export const groupBy30s = (transactions) => {
+export const groupBy30s = (transactions, candleRange=30000) => {
   console.log("🚀 ~ groupBy30s ~ transactions:", transactions);
   transactions = transactions.map((tx) => {
     return { ...tx, date: new Date(tx.date) };
@@ -93,16 +93,16 @@ export const groupBy30s = (transactions) => {
   const intervalGroups = [];
   let currentGroup = [];
   let currentInterval =
-    Math.floor(transactions[0].date.getTime() / 30000) * 30000;
+    Math.floor(transactions[0].date.getTime() / candleRange) * candleRange;
 
   transactions.forEach((tx) => {
-    const intervalStart = Math.floor(tx.date.getTime() / 30000) * 30000;
+    const intervalStart = Math.floor(tx.date.getTime() / candleRange) * candleRange;
     if (intervalStart !== currentInterval) {
       intervalGroups.push({
         interval: new Date(currentInterval),
         ohlc: getOHLC(currentGroup),
         range: `${new Date(currentInterval).toISOString()} - ${new Date(
-          currentInterval + 30000
+          currentInterval + candleRange
         ).toISOString()}`,
       });
       currentGroup = [];
@@ -116,7 +116,7 @@ export const groupBy30s = (transactions) => {
     interval: new Date(currentInterval),
     ohlc: getOHLC(currentGroup),
     range: `${new Date(currentInterval).toISOString()} - ${new Date(
-      currentInterval + 30000
+      currentInterval + candleRange
     ).toISOString()}`,
   });
 

@@ -16,8 +16,10 @@ import PulseChart from "./PumpFunPriceChart/PulseChart";
 import TradeHistory from "./TradeHistory/TradeHistory";
 import { groupBy30s } from "@/utils/helper";
 import { dummyTxHistory } from "@/utils/pump-fun-price-graph";
+import TradingChartApex from "./TradingChart/TradingChart";
 export default function BuySellPanel() {
   const [txHistory, setTxHistory] = useState([]);
+  const [tradingChart, setTradingChart] = useState([]);
   const [amm, setAmm] = useState(null);
   const [userBalance, setUserBalance] = useState({
     solBalance: 100,
@@ -30,6 +32,7 @@ export default function BuySellPanel() {
   const [buyQuote, setBuyQuote] = useState(0);
   const [sellQuote, setSellQuote] = useState(0);
   const [progress, setProgress] = useState(0);
+
   const [ammState, setAmmState] = useState({
     realTokenBalance: 0,
     realSolBalance: 0,
@@ -165,7 +168,13 @@ export default function BuySellPanel() {
     }
   };
 
-  const result = groupBy30s(dummyTxHistory);
+  useEffect(() => {
+    const result = groupBy30s(dummyTxHistory, 30000);
+    setTradingChart(result);
+    // console.log("tradingChart 🎇🎇🎇 ", result);
+  }, []);
+
+  console.log("Trading Chart 🎉🎉🎉", tradingChart);
 
   if (!amm) {
     return <HomeLoader />;
@@ -315,14 +324,15 @@ export default function BuySellPanel() {
         </div>
       </div>
       <div className="container mx-auto">
-        <PumpFunPriceChart
+        <TradingChartApex chartData={tradingChart} />
+        {/* <PumpFunPriceChart
           tokenSold={
             ammState.initialRealTokenBalance - ammState.realTokenBalance
           }
           currentPrice={parseFloat(
             amm.getSolFrom(1000000).solReceived.toFixed(6)
           )}
-        />
+        /> */}
         {/* <TradeHistory transactions={txHistory}/> */}
         {/* <div style={{ position: "relative", width: "100%", height: "500px" }}>
           <PulseChart data={priceData} />
