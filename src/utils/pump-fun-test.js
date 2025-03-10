@@ -23,16 +23,16 @@ class PumpFunAmm {
     return progress;
   }
   getState() {
-    console.log("🚀 this.tokenSold:", this.initialRealTokenBalance - this.realTokenBalance);
-    console.log("🚀 this.realTokenBalance:", this.realTokenBalance);
-    console.log("🚀 this.realSolBalance:", this.realSolBalance);
+    // console.log("🚀 this.tokenSold:", this.initialRealTokenBalance - this.realTokenBalance);
+    // console.log("🚀 this.realTokenBalance:", this.realTokenBalance);
+    // console.log("🚀 this.realSolBalance:", this.realSolBalance);
 
-    console.log("🚀 this.tokenReserves:", this.tokenReserves);
-    console.log("🚀 this.solReserves:", this.solReserves);
-    console.log(
-      "🚀 this.initialRealTokenBalance:",
-      this.initialRealTokenBalance
-    );
+    // console.log("🚀 this.tokenReserves:", this.tokenReserves);
+    // console.log("🚀 this.solReserves:", this.solReserves);
+    // console.log(
+    //   "🚀 this.initialRealTokenBalance:",
+    //   this.initialRealTokenBalance
+    // );
 
     return {
       realTokenBalance: this.realTokenBalance,

@@ -80,11 +80,11 @@ const getOHLC = (transactions) => {
 
 // Function to group transactions by 30s intervals
 export const groupBy30s = (transactions, candleRange = 30000) => {
-  console.log("🚀 ~ groupBy30s ~ transactions:", transactions);
+  // console.log("🚀 ~ groupBy30s ~ transactions:", transactions);
   transactions = transactions.map((tx) => {
     return { ...tx, date: new Date(tx.date) };
   });
-  console.log("🚀 ~ groupBy30s ~ transactions:", transactions);
+  // console.log("🚀 ~ groupBy30s ~ transactions:", transactions);
   const intervalGroups = [];
   let currentGroup = [];
   let currentInterval =
@@ -106,7 +106,7 @@ export const groupBy30s = (transactions, candleRange = 30000) => {
     }
     currentGroup.push(tx);
   });
-  console.log("🚀 ~ transactions.forEach ~ intervalGroups:", intervalGroups);
+  // console.log("🚀 ~ transactions.forEach ~ intervalGroups:", intervalGroups);
 
   // Add last group
   intervalGroups.push({
@@ -117,12 +117,12 @@ export const groupBy30s = (transactions, candleRange = 30000) => {
     ).toISOString()}`,
   });
 
-  console.log("🚀 ~ groupBy30s ~ intervalGroups:", intervalGroups);
+  // console.log("🚀 ~ groupBy30s ~ intervalGroups:", intervalGroups);
   return intervalGroups;
 };
 
-export const generateOHLCWithPrices = (transactions, interval = 60 * 1000) => {
-  console.log("🚀 ~ generateOHLCWithPrices ~ transactions:", transactions);
+export const generateOHLCWithPrices = (transactions, interval = 40 * 1000) => {
+  // console.log("🚀 ~ generateOHLCWithPrices ~ transactions:", transactions);
   // Initialize the result array
   let ohlcData = [];
   let currentCandle = null;

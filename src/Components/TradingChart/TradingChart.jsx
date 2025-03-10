@@ -7,7 +7,7 @@ const TradingChartApex = ({ chartData }) => {
   const chartInstanceRef = useRef(null);
 
   useEffect(() => {
-    if (chartData && chartData.length > 0 && chartContainerRef.current) {
+    if (chartData && chartContainerRef.current) {
       // Dynamically import ApexCharts
       import("apexcharts").then((ApexChartsModule) => {
         const ApexCharts = ApexChartsModule.default;
@@ -16,8 +16,8 @@ const TradingChartApex = ({ chartData }) => {
           chart: {
             type: "candlestick",
             height: 400,
-            background: "#1C1C1C", // Dark background for a sleek look
-            foreColor: "#F7FAFC",
+            background: "#0A0A0A",
+            foreColor: "#0A0A0A",
             toolbar: {
               show: true,
               tools: {
@@ -31,21 +31,24 @@ const TradingChartApex = ({ chartData }) => {
               },
             },
             animations: {
+              enabled: false, // Disable animations for better performance
+            },
+            zoom: {
               enabled: true,
-              easing: "easeinout",
-              speed: 800,
+              autoScaleYaxis: true,
             },
           },
-          // Removed the title property for a cleaner look
           plotOptions: {
             candlestick: {
               colors: {
-                upward: "#00B746", // Green for bullish candles
-                downward: "#EF403C", // Red for bearish candles
+                upward: "#00B746",
+                downward: "#EF403C",
               },
               wick: {
                 useFillColor: true,
               },
+              // Fixed width in pixels - direct solution
+              barWidth: 4,
             },
           },
           series: [
@@ -56,7 +59,7 @@ const TradingChartApex = ({ chartData }) => {
                   parseFloat(candle.open ?? 0),
                   parseFloat(candle.high),
                   parseFloat(candle.low),
-                  parseFloat(candle.close ?? 0)
+                  parseFloat(candle.close ?? 0),
                 ],
               })),
             },
@@ -67,6 +70,7 @@ const TradingChartApex = ({ chartData }) => {
               style: {
                 colors: "#CBD5E0",
               },
+              datetimeUTC: false,
             },
             axisBorder: {
               show: true,
@@ -74,12 +78,10 @@ const TradingChartApex = ({ chartData }) => {
             },
             crosshairs: {
               show: true,
-              stroke: {
-                color: "#4A5568",
-                width: 1,
-                dashArray: 3,
-              },
             },
+            // Force the time scale to be uniform
+            tickPlacement: "on",
+            tickAmount: 10,
           },
           yaxis: {
             tooltip: {
@@ -90,6 +92,7 @@ const TradingChartApex = ({ chartData }) => {
                 colors: "#CBD5E0",
               },
             },
+            floating: false,
           },
           grid: {
             borderColor: "#2D3748",
@@ -116,7 +119,7 @@ const TradingChartApex = ({ chartData }) => {
           ],
         };
 
-        // Destroy previous instance if exists to avoid duplicate rendering
+        // Destroy previous instance if exists
         if (chartInstanceRef.current) {
           chartInstanceRef.current.destroy();
         }
@@ -129,7 +132,6 @@ const TradingChartApex = ({ chartData }) => {
       });
     }
 
-    // Cleanup on component unmount or before re-rendering
     return () => {
       if (chartInstanceRef.current) {
         chartInstanceRef.current.destroy();
@@ -141,7 +143,12 @@ const TradingChartApex = ({ chartData }) => {
   return (
     <div
       id="apex-chart"
-      style={{ borderRadius: "7px", overflow: "hidden" }}
+      style={{
+        borderRadius: "7px",
+        overflow: "hidden",
+        width: "100%",
+        height: "400px",
+      }}
       ref={chartContainerRef}
     ></div>
   );

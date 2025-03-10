@@ -21,20 +21,20 @@ export class PumpFunAmm {
     getProgess() {
       const _left = (this.realTokenBalance / this.initialRealTokenBalance) * 100;
       const progress = 100 - _left;
-      console.log("🚀 Progress: xxxxxxxxxxxxxxxxxx", progress);
+      // console.log("🚀 Progress: xxxxxxxxxxxxxxxxxx", progress);
       return progress;
     }
     getState() {
-      console.log("🚀 this.tokenSold:", this.initialRealTokenBalance - this.realTokenBalance);
-      console.log("🚀 this.realTokenBalance:", this.realTokenBalance);
-      console.log("🚀 this.realSolBalance:", this.realSolBalance);
+      // console.log("🚀 this.tokenSold:", this.initialRealTokenBalance - this.realTokenBalance);
+      // console.log("🚀 this.realTokenBalance:", this.realTokenBalance);
+      // console.log("🚀 this.realSolBalance:", this.realSolBalance);
   
-      console.log("🚀 this.tokenReserves:", this.tokenReserves);
-      console.log("🚀 this.solReserves:", this.solReserves);
-      console.log(
-        "🚀 this.initialRealTokenBalance:",
-        this.initialRealTokenBalance
-      );
+      // console.log("🚀 this.tokenReserves:", this.tokenReserves);
+      // console.log("🚀 this.solReserves:", this.solReserves);
+      // console.log(
+      //   "🚀 this.initialRealTokenBalance:",
+      //   this.initialRealTokenBalance
+      // );
   
       return {
         realTokenBalance: this.realTokenBalance,

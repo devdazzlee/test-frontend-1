@@ -69,9 +69,9 @@ export default function BuySellPanel() {
       toast.error("Not enough SOL available");
       return;
     }
-    const oldPrice =parseFloat(amm.getSolFrom(1).solReceived);
+    const oldPrice = parseFloat(amm.getSolFrom(1).solReceived);
     const tokensReceived = amm.buyTokens(solAmount);
-    const newPrice =parseFloat(amm.getSolFrom(1).solReceived);
+    const newPrice = parseFloat(amm.getSolFrom(1).solReceived);
 
     const buyTx = {
       oldPrice,
@@ -182,7 +182,7 @@ export default function BuySellPanel() {
     if (txHistory.length > 0) {
       // const result = groupBy30s(txHistory, 30000);
       const ohlc = generateOHLCWithPrices(txHistory);
-      console.log("🚀 ~ useEffect ~ ohlc:", ohlc)
+      console.log("🚀 ~ useEffect ~ ohlc:", ohlc);
 
       setTradingChart(ohlc);
     }
@@ -336,16 +336,20 @@ export default function BuySellPanel() {
           <TransactionHistory txHistory={txHistory} />
         </div>
       </div>
-      <div className="container mx-auto">
-        <TradingChartApex chartData={tradingChart} />
-        {/* <PumpFunPriceChart
-          tokenSold={
-            ammState.initialRealTokenBalance - ammState.realTokenBalance
-          }
-          currentPrice={parseFloat(
-            amm.getSolFrom(1000000).solReceived.toFixed(6)
-          )}
-        /> */}
+      <div className="container mx-auto flex w-full items-center">
+        <div className="w-full">
+          <TradingChartApex chartData={tradingChart} />
+        </div>
+        <div className="w-full">
+          <PumpFunPriceChart
+            tokenSold={
+              ammState.initialRealTokenBalance - ammState.realTokenBalance
+            }
+            currentPrice={parseFloat(
+              amm.getSolFrom(1000000).solReceived.toFixed(6)
+            )}
+          />
+        </div>
         {/* <TradeHistory transactions={txHistory}/> */}
         {/* <div style={{ position: "relative", width: "100%", height: "500px" }}>
           <PulseChart data={priceData} />
