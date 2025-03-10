@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 import PumpFunPriceChart from "./PumpFunPriceChart/PumpFunPriceChart";
 import PulseChart from "./PumpFunPriceChart/PulseChart";
 import TradeHistory from "./TradeHistory/TradeHistory";
-import { groupBy30s } from "@/utils/helper";
+import { dummyTx1, generateOHLCWithPrices, groupBy30s } from "@/utils/helper";
 import { dummyTxHistory } from "@/utils/pump-fun-price-graph";
 import TradingChartApex from "./TradingChart/TradingChart";
 export default function BuySellPanel() {
@@ -69,9 +69,13 @@ export default function BuySellPanel() {
       toast.error("Not enough SOL available");
       return;
     }
+    const oldPrice =parseFloat(amm.getSolFrom(1).solReceived);
     const tokensReceived = amm.buyTokens(solAmount);
+    const newPrice =parseFloat(amm.getSolFrom(1).solReceived);
 
-    const newTx = {
+    const buyTx = {
+      oldPrice,
+      newPrice,
       type: "buy",
       sellAmount: {
         amount: solAmount,
@@ -81,9 +85,9 @@ export default function BuySellPanel() {
         amount: tokensReceived,
         currency: "TOKEN",
       },
-      date: new Date(),
+      timestamp: new Date().getTime(),
     };
-    setTxHistory([newTx, ...txHistory]);
+    setTxHistory([...txHistory, buyTx]);
 
     setUserBalance((prev) => ({
       solBalance: prev.solBalance - solAmount,
@@ -106,9 +110,13 @@ export default function BuySellPanel() {
       toast.error("Not enough token available");
       return;
     }
+    const oldPrice = parseFloat(amm.getSolFrom(1).solReceived);
     const solReceived = amm.sellTokens(tokenAmount);
 
-    const newTx = {
+    const newPrice = parseFloat(amm.getSolFrom(1).solReceived);
+    const sellTx = {
+      oldPrice,
+      newPrice,
       type: "sell",
       sellAmount: {
         amount: tokenAmount,
@@ -118,9 +126,9 @@ export default function BuySellPanel() {
         amount: solReceived,
         currency: "SOL",
       },
-      date: new Date(),
+      timestamp: new Date().getTime(),
     };
-    setTxHistory([newTx, ...txHistory]);
+    setTxHistory([...txHistory, sellTx]);
 
     setUserBalance((prev) => ({
       solBalance: prev.solBalance + solReceived,
@@ -169,12 +177,17 @@ export default function BuySellPanel() {
   };
 
   useEffect(() => {
-    const result = groupBy30s(dummyTxHistory, 30000);
-    setTradingChart(result);
-    // console.log("tradingChart 🎇🎇🎇 ", result);
-  }, []);
+    // const result = groupBy30s(dummyTxHistory, 30000);
+    // setTradingChart(result);
+    if (txHistory.length > 0) {
+      // const result = groupBy30s(txHistory, 30000);
+      const ohlc = generateOHLCWithPrices(txHistory);
+      console.log("🚀 ~ useEffect ~ ohlc:", ohlc)
 
-  console.log("Trading Chart 🎉🎉🎉", tradingChart);
+      setTradingChart(ohlc);
+    }
+    // console.log("tradingChart 🎇🎇🎇 ", result);
+  }, [txHistory]);
 
   if (!amm) {
     return <HomeLoader />;

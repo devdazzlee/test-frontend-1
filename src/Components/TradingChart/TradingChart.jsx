@@ -50,13 +50,13 @@ const TradingChartApex = ({ chartData }) => {
           },
           series: [
             {
-              data: chartData.map((bar) => ({
-                x: new Date(bar.interval),
+              data: chartData.map((candle) => ({
+                x: new Date(candle.timestamp),
                 y: [
-                  parseFloat(bar.ohlc.open.toFixed(2)),
-                  parseFloat(bar.ohlc.high.toFixed(2)),
-                  parseFloat(bar.ohlc.low.toFixed(2)),
-                  parseFloat(bar.ohlc.close.toFixed(2)),
+                  parseFloat(candle.open ?? 0),
+                  parseFloat(candle.high),
+                  parseFloat(candle.low),
+                  parseFloat(candle.close ?? 0)
                 ],
               })),
             },
@@ -109,7 +109,7 @@ const TradingChartApex = ({ chartData }) => {
               breakpoint: 768,
               options: {
                 chart: {
-                  height: 300,
+                  height: 400,
                 },
               },
             },

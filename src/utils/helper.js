@@ -1,70 +1,65 @@
-const dummyTxHistory = [
+export const dummyTx1 = [
   {
-    type: "buy",
-    sellAmount: { amount: 3.57, currency: "SOL" },
-    buyAmount: { amount: 246.37, currency: "TOKEN" },
-    date: "2025-03-07T09:13:28.241Z",
-  },
-  {
-    type: "buy",
-    sellAmount: { amount: 2.73, currency: "SOL" },
-    buyAmount: { amount: 198.51, currency: "TOKEN" },
-    date: "2025-03-07T09:13:24.241Z",
-  },
-  {
-    type: "buy",
-    sellAmount: { amount: 1.33, currency: "SOL" },
-    buyAmount: { amount: 99.8, currency: "TOKEN" },
-    date: "2025-03-07T09:13:22.241Z",
+    type: "sell",
+    sellAmount: {
+      amount: 11111111,
+      currency: "TOKEN",
+    },
+    buyAmount: {
+      amount: 2.9786291352333762,
+      currency: "SOL",
+    },
+    date: "2025-03-10T08:03:27.454Z",
   },
   {
     type: "sell",
-    sellAmount: { amount: 372.13, currency: "TOKEN" },
-    buyAmount: { amount: 2.72, currency: "SOL" },
-    date: "2025-03-07T09:13:19.241Z",
+    sellAmount: {
+      amount: 19111111,
+      currency: "TOKEN",
+    },
+    buyAmount: {
+      amount: 5.604247830143578,
+      currency: "SOL",
+    },
+    date: "2025-03-10T08:02:28.609Z",
   },
   {
     type: "buy",
-    sellAmount: { amount: 1.81, currency: "SOL" },
-    buyAmount: { amount: 173.82, currency: "TOKEN" },
-    date: "2025-03-07T09:13:16.241Z",
+    sellAmount: {
+      amount: 40,
+      currency: "SOL",
+    },
+    buyAmount: {
+      amount: 214600038.2,
+      currency: "TOKEN",
+    },
+    date: "2025-03-10T08:02:02.590Z",
   },
   {
     type: "buy",
-    sellAmount: { amount: 3.13, currency: "SOL" },
-    buyAmount: { amount: 222.0, currency: "TOKEN" },
-    date: "2025-03-07T09:12:59.241Z",
+    sellAmount: {
+      amount: 20,
+      currency: "SOL",
+    },
+    buyAmount: {
+      amount: 268250047.75,
+      currency: "TOKEN",
+    },
+    date: "2025-03-10T08:01:54.363Z",
   },
   {
     type: "buy",
-    sellAmount: { amount: 0.19, currency: "SOL" },
-    buyAmount: { amount: 14.22, currency: "TOKEN" },
-    date: "2025-03-07T09:12:53.241Z",
-  },
-  {
-    type: "sell",
-    sellAmount: { amount: 275.36, currency: "TOKEN" },
-    buyAmount: { amount: 2.8, currency: "SOL" },
-    date: "2025-03-07T09:12:47.241Z",
-  },
-  {
-    type: "buy",
-    sellAmount: { amount: 4.85, currency: "SOL" },
-    buyAmount: { amount: 293.84, currency: "TOKEN" },
-    date: "2025-03-07T09:12:45.241Z",
-  },
-  {
-    type: "buy",
-    sellAmount: { amount: 3.21, currency: "SOL" },
-    buyAmount: { amount: 208.39, currency: "TOKEN" },
-    date: "2025-03-07T09:12:24.241Z",
+    sellAmount: {
+      amount: 10,
+      currency: "SOL",
+    },
+    buyAmount: {
+      amount: 268250047.75,
+      currency: "TOKEN",
+    },
+    date: "2025-03-10T08:01:35.096Z",
   },
 ];
-
-// Convert string date to Date object for sorting and comparison
-dummyTxHistory.forEach((tx) => {
-  tx.date = new Date(tx.date);
-});
 
 // Function to calculate OHLC for a given 30-second interval
 const getOHLC = (transactions) => {
@@ -84,7 +79,7 @@ const getOHLC = (transactions) => {
 };
 
 // Function to group transactions by 30s intervals
-export const groupBy30s = (transactions, candleRange=30000) => {
+export const groupBy30s = (transactions, candleRange = 30000) => {
   console.log("🚀 ~ groupBy30s ~ transactions:", transactions);
   transactions = transactions.map((tx) => {
     return { ...tx, date: new Date(tx.date) };
@@ -96,7 +91,8 @@ export const groupBy30s = (transactions, candleRange=30000) => {
     Math.floor(transactions[0].date.getTime() / candleRange) * candleRange;
 
   transactions.forEach((tx) => {
-    const intervalStart = Math.floor(tx.date.getTime() / candleRange) * candleRange;
+    const intervalStart =
+      Math.floor(tx.date.getTime() / candleRange) * candleRange;
     if (intervalStart !== currentInterval) {
       intervalGroups.push({
         interval: new Date(currentInterval),
@@ -110,6 +106,7 @@ export const groupBy30s = (transactions, candleRange=30000) => {
     }
     currentGroup.push(tx);
   });
+  console.log("🚀 ~ transactions.forEach ~ intervalGroups:", intervalGroups);
 
   // Add last group
   intervalGroups.push({
@@ -122,4 +119,58 @@ export const groupBy30s = (transactions, candleRange=30000) => {
 
   console.log("🚀 ~ groupBy30s ~ intervalGroups:", intervalGroups);
   return intervalGroups;
+};
+
+export const generateOHLCWithPrices = (transactions, interval = 60 * 1000) => {
+  console.log("🚀 ~ generateOHLCWithPrices ~ transactions:", transactions);
+  // Initialize the result array
+  let ohlcData = [];
+  let currentCandle = null;
+  let oldPrice = null; // Tracks the price before the current candle interval
+  let afterPrice = null; // Tracks the price after the current candle interval
+
+  // Sort transactions by timestamp
+  transactions.sort((a, b) => a.timestamp - b.timestamp);
+
+  transactions.forEach((transaction) => {
+    const timeSlotStart =
+      Math.floor(transaction.timestamp / interval) * interval;
+
+    // Create a new candle for a new 30-second window
+    if (!currentCandle || currentCandle.timestamp !== timeSlotStart) {
+      if (currentCandle) {
+        // Push the last candle with oldPrice and afterPrice
+        currentCandle.oldPrice = oldPrice;
+        currentCandle.afterPrice = transaction.newPrice;
+        ohlcData.push(currentCandle);
+      }
+
+      // Reset for the new candle
+      currentCandle = {
+        timestamp: timeSlotStart,
+        open: transaction.oldPrice,
+        low: transaction.oldPrice,
+        high: transaction.newPrice,
+        close: transaction.newPrice,
+      };
+
+      // Update the oldPrice for the new candle
+      oldPrice = currentCandle.open;
+    }
+
+    // Update High, Low, Close within the same time slot
+    currentCandle.high = Math.max(currentCandle.high, transaction.newPrice);
+    currentCandle.low = Math.min(currentCandle.low, transaction.newPrice);
+    currentCandle.close = transaction.newPrice;
+  });
+
+  // Add the last candle if it exists
+  if (currentCandle) {
+    // We don't have an afterPrice for the last candle, so we can leave it as undefined or null
+    currentCandle.oldPrice = oldPrice;
+    currentCandle.afterPrice = afterPrice || currentCandle.close;
+    ohlcData.push(currentCandle);
+  }
+
+  return ohlcData;
 };
