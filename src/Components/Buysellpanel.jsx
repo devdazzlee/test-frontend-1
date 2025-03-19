@@ -210,6 +210,28 @@ export default function BuySellPanel() {
     }
   };
 
+  // **NEW: Refresh Token API**
+app.post("/refresh-token", (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+  if (!refreshToken) return res.status(403).json({ message: "No token found" });
+
+  jwt.verify(refreshToken, REFRESH_SECRET, (err, user) => {
+    if (err) return res.status(403).json({ message: "Invalid token" });
+
+    const newAccessToken = generateAccessToken({ id: user.id, email: user.email });
+
+    res.cookie("accessToken", newAccessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 15 * 60 * 1000,
+      path: "/",
+    });
+
+    res.json({ message: "Token refreshed", accessToken: newAccessToken });
+  });
+});
+
   return (
     <div>
       <h1 className=" mt-6 text-4xl font-extrabold text-center bg-gradient-to-r from-[#00FF85] to-yellow-400 text-transparent bg-clip-text drop-shadow-[0_0_10px_rgba(0,255,133,0.6)] animate-text-glow">
