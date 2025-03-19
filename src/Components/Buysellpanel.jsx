@@ -4,6 +4,7 @@ import { PumpFunAmm } from "@/utils/pump-fun-final";
 import { CircleArrowDown, CircleArrowUp, Wallet, Zap } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import axios from "axios";
 import LabelValueRow from "./LabelValueRow/LabelValueRow";
 import Image from "next/image";
 import TransactionHistory from "./TransactionHistory/TransactionHistory";
@@ -193,6 +194,28 @@ export default function BuySellPanel() {
     return <HomeLoader />;
   }
 
+  const loginUser = async () => {
+    try {
+      const response = await axios.post(
+        "https://test-cookies-server.vercel.app/login", // Updated URL
+        {
+          email: "test@example.com",
+          password: "password123",
+        },
+        {
+          withCredentials: true,
+          headers: {
+            // Request partitioned cookies
+            "Accept-CH": "Sec-CH-Partitioned-Cookies",
+          },
+        }
+      );
+      console.log("Login successful", response.data);
+    } catch (error) {
+      console.error("Login failed", error);
+    }
+  };
+
   return (
     <div>
       <h1 className=" mt-6 text-4xl font-extrabold text-center bg-gradient-to-r from-[#00FF85] to-yellow-400 text-transparent bg-clip-text drop-shadow-[0_0_10px_rgba(0,255,133,0.6)] animate-text-glow">
@@ -200,6 +223,7 @@ export default function BuySellPanel() {
       </h1>
 
       <div className="flex flex-wrap justify-center">
+        <button onClick={() => loginUser()}>Call Api</button>
         <div>
           <div className="w-full  mx-auto stats-card rounded-2xl p-4 text-white my-6">
             <div className="mt-2">
