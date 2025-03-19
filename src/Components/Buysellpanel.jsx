@@ -197,7 +197,7 @@ export default function BuySellPanel() {
   const loginUser = async () => {
     try {
       const response = await axios.post(
-        "https://test-cookies-server.vercel.app/login", // Updated URL
+        "https://test-cookies-server-production.up.railway.app/login", // Updated URL
         {
           email: "test@example.com",
           password: "password123",
