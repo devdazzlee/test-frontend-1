@@ -18,6 +18,7 @@ import TradeHistory from "./TradeHistory/TradeHistory";
 import { dummyTx1, generateOHLCWithPrices, groupBy30s } from "@/utils/helper";
 import { dummyTxHistory } from "@/utils/pump-fun-price-graph";
 import TradingChartApex from "./TradingChart/TradingChart";
+import axiosInstance from "@/utils/axiosInstance";
 export default function BuySellPanel() {
   const [txHistory, setTxHistory] = useState([]);
   const [tradingChart, setTradingChart] = useState([]);
@@ -196,18 +197,11 @@ export default function BuySellPanel() {
 
   const loginUser = async () => {
     try {
-      const response = await axios.post(
-        "https://test-cookies-server-production.up.railway.app/login", // Updated URL
+      const response = await axiosInstance.post(
+        "/login", // Updated URL
         {
           email: "test@example.com",
           password: "password123",
-        },
-        {
-          withCredentials: true,
-          // headers: {
-          //   // Request partitioned cookies
-          //   "Accept-CH": "Sec-CH-Partitioned-Cookies",
-          // },
         }
       );
       console.log("Login successful", response.data);
