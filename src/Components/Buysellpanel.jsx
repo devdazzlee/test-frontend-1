@@ -204,10 +204,10 @@ export default function BuySellPanel() {
         },
         {
           withCredentials: true,
-          headers: {
-            // Request partitioned cookies
-            "Accept-CH": "Sec-CH-Partitioned-Cookies",
-          },
+          // headers: {
+          //   // Request partitioned cookies
+          //   "Accept-CH": "Sec-CH-Partitioned-Cookies",
+          // },
         }
       );
       console.log("Login successful", response.data);
