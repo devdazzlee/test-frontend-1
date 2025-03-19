@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://test-cookies-server.vercel.app", // Use environment variables
+  baseURL: "https://test-cookies-server-production.up.railway.app", // Use environment variables
   withCredentials: true,
 });
 
